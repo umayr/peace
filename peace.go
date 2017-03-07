@@ -1,19 +1,19 @@
 package peace
 
 import (
-	"os"
+	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
-	"fmt"
-	"strings"
-	"regexp"
+	"os"
 	"os/exec"
-	"bytes"
+	"regexp"
+	"strings"
 )
 
 const (
-	Pass = "Pass"
-	Fail = "Fail"
+	Pass  = "Pass"
+	Fail  = "Fail"
 	Panic = "Panic"
 )
 
@@ -39,7 +39,6 @@ func (r Result) String() string {
 
 	return fmt.Sprintf("\n%s: [%d]\n%s", r.Package, len(r.Tests), buf.String())
 }
-
 
 func Do(pkg string, tags string, logging bool) (*Result, error) {
 	if logging {
@@ -90,7 +89,7 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 			log.Printf("Executing: `go %s`\n", strings.Join(args, " "))
 		}
 
-		name := args[len(args) - 1]
+		name := args[len(args)-1]
 		status := Pass
 
 		var out bytes.Buffer
@@ -106,7 +105,7 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 			}
 			status = Fail
 		}
-		APPEND:
+	APPEND:
 		result.Tests = append(result.Tests, Test{name, status})
 	}
 

@@ -1,17 +1,17 @@
 package main
 
 import (
-	"log"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/umayr/peace"
 )
 
 var (
-	pkg string
-	tags string
+	pkg     string
+	tags    string
 	logging bool
 )
 
