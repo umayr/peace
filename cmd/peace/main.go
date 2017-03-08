@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/umayr/peace"
 )
@@ -26,6 +27,10 @@ func main() {
 
 	if pkg == "" {
 		log.Fatal("Package name is required")
+	}
+
+	if strings.HasPrefix(pkg, "/") {
+		log.Fatal("Invalid package name")
 	}
 
 	r, err := peace.Do(pkg, tags, logging)
