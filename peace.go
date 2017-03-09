@@ -96,6 +96,7 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 
 		cmd := exec.Command("go", args...)
 		cmd.Stdout = &out
+		cmd.Env = os.Environ()
 
 		if cmd.Run() != nil {
 			r := regexp.MustCompile(`panic:.*`)
