@@ -84,9 +84,9 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 	result := new(Result)
 	result.Package = pkg
 
-	for _, args := range cmds {
+	for index, args := range cmds {
 		if logging {
-			log.Printf("Executing: `go %s`\n", strings.Join(args, " "))
+			log.Printf("Executing [%d/%d]: `go %s`\n", index+1, len(cmds), strings.Join(args, " "))
 		}
 
 		name := args[len(args)-1]
