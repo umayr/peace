@@ -107,6 +107,9 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 			status = Fail
 		}
 	APPEND:
+		if logging && status != Pass {
+			log.Println(out.String())
+		}
 		result.Tests = append(result.Tests, Test{name, status})
 	}
 
