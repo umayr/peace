@@ -79,6 +79,12 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 			for _, match := range r0.FindAllStringSubmatch(string(raw), -1) {
 				cmds = append(cmds, append(args, pkg, "-run", match[1]))
 			}
+
+			// gocheck
+			r1 := regexp.MustCompile(`func\s\((?:.*\*([A-Za-z0-9_]+))\)\s(Test[A-Za-z0-9_]+)`)
+			for _, match := range r1.FindAllStringSubmatch(string(raw), -1) {
+				cmds = append(cmds, append(args, pkg, "-check.f", match[1]+"."+match[2]))
+			}
 		}
 	}
 
