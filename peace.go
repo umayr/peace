@@ -74,8 +74,9 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 				return nil, err
 			}
 
-			r := regexp.MustCompile(`func\s(Test[A-Za-z0-9]+)`)
-			for _, match := range r.FindAllStringSubmatch(string(raw), -1) {
+			// default
+			r0 := regexp.MustCompile(`func\s(Test[A-Za-z0-9_]+)`)
+			for _, match := range r0.FindAllStringSubmatch(string(raw), -1) {
 				cmds = append(cmds, append(args, pkg, "-run", match[1]))
 			}
 		}
