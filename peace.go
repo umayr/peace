@@ -106,7 +106,7 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 		cmd.Env = os.Environ()
 
 		if cmd.Run() != nil {
-			r := regexp.MustCompile(`panic:.*`)
+			r := regexp.MustCompile(`(?i)panic:.*`)
 			if r.MatchString(out.String()) {
 				status = Panic
 				goto APPEND
