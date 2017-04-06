@@ -74,9 +74,16 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 				return nil, err
 			}
 
-			r := regexp.MustCompile(`func\s(Test[A-Za-z0-9]+)`)
-			for _, match := range r.FindAllStringSubmatch(string(raw), -1) {
+			// default
+			r0 := regexp.MustCompile(`func\s(Test[A-Za-z0-9_]+)`)
+			for _, match := range r0.FindAllStringSubmatch(string(raw), -1) {
 				cmds = append(cmds, append(args, pkg, "-run", match[1]))
+			}
+
+			// gocheck
+			r1 := regexp.MustCompile(`func\s\((?:.*\*([A-Za-z0-9_]+))\)\s(Test[A-Za-z0-9_]+)`)
+			for _, match := range r1.FindAllStringSubmatch(string(raw), -1) {
+				cmds = append(cmds, append(args, pkg, "-check.f", match[1]+"."+match[2]))
 			}
 		}
 	}
@@ -99,7 +106,7 @@ func Do(pkg string, tags string, logging bool) (*Result, error) {
 		cmd.Env = os.Environ()
 
 		if cmd.Run() != nil {
-			r := regexp.MustCompile(`panic:.*`)
+			r := regexp.MustCompile(`(?i)panic:.*`)
 			if r.MatchString(out.String()) {
 				status = Panic
 				goto APPEND
